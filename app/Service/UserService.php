@@ -28,4 +28,24 @@ class UserService
 
         return $user;
     }
+
+    /**
+     * Updates the email of the user
+     *
+     * @param User $user
+     * @param string $email
+     * @return User|false
+     */
+    public function updateEmail(User $user, string $email) : User | false
+    {
+        $user->update([
+            'email' => $email
+        ]);
+
+        if ($user->email === $email) {
+            return $user;
+        }
+
+        return false;
+    }
 }

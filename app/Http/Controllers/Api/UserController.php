@@ -5,7 +5,9 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\LoginUserRequest;
 use App\Http\Requests\UserSignUpRequest;
+use App\Http\Requests\UserUpdateEmailRequest;
 use App\Http\Resources\UserLoginResource;
+use App\Http\Resources\UserResource;
 use App\Service\UserService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -81,6 +83,27 @@ class UserController extends Controller
 
         return response()->json([
             'message' => 'Failed to signup the user',
+        ], 422);
+    }
+
+    /**
+     * Method to update the user information
+     *
+     * @param UserUpdateEmailRequest $request
+     * @return UserResource|JsonResponse
+     */
+    public function updateEmail(UserUpdateEmailRequest $request) : UserResource | JsonResponse
+    {
+        $email = $request->validated('email');
+
+        $user = $this->service->updateEmail(Auth::user(), $email);
+
+        if ($user) {
+            return new UserResource($user);
+        }
+
+        return response()->json([
+            'message' => "Failed to update the user's email"
         ], 422);
     }
 }
