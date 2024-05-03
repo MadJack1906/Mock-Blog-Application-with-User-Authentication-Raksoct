@@ -64,6 +64,8 @@ class PostController extends Controller
     }
 
     /**
+     * Updates the Posts
+     *
      * @param PostUpdateRequest $request
      * @param Post $post
      * @return PostResource|JsonResponse
@@ -79,5 +81,27 @@ class PostController extends Controller
         return Response::error([
             'message' => 'Failed to update the post',
         ], 422);
+    }
+
+    /**
+     * Deletes the Post
+     *
+     *
+     * @param Post $post
+     * @return JsonResponse
+     */
+    public function delete(Post $post): JsonResponse
+    {
+        $status = $this->service->delete($post, Auth::user());
+
+        if ($status) {
+            return Response::success([
+                'message' => 'Post Deleted Successfully',
+            ]);
+        }
+
+        return Response::error([
+            'message' => 'Failed to delete the Post'
+        ], 404);
     }
 }

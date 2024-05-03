@@ -53,4 +53,18 @@ class PostService
 
         return false;
     }
+
+    /**
+     * Deletes the post
+     *
+     * @param Post $post
+     * @param User $user
+     * @return bool|null
+     */
+    public function delete(Post $post, User $user)
+    {
+        $status = $post->delete();
+
+        return $status;
+    }
 }
