@@ -9,7 +9,7 @@ use App\Http\Requests\UserUpdateEmailRequest;
 use App\Http\Requests\UserUpdatePasswordRequest;
 use App\Http\Resources\UserLoginResource;
 use App\Http\Resources\UserResource;
-use App\Service\UserService;
+use App\Services\UserService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
