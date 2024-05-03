@@ -55,4 +55,10 @@ class User extends Authenticatable
     {
         return $this->hasMany(Post::class);
     }
+
+    public function activities() : HasMany
+    {
+        return $this->hasMany(PostAuditLog::class, 'user_id')
+            ->latest();
+    }
 }

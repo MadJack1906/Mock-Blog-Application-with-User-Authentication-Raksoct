@@ -7,6 +7,10 @@ use App\Models\User;
 
 class PostService
 {
+    public function __construct(
+        private PostAuditLogService $logService,
+    ) {}
+
     /**
      * @param User $user
      * @param array $data
@@ -23,6 +27,8 @@ class PostService
             'user_id' => $user->id
         ]);
 
+        $this->logService->createLog($post, $user);
+
         if ($post?->id !== null) {
             return $post;
         }
@@ -38,6 +44,9 @@ class PostService
      */
     public function update(Post $post, array $data, User $user) : bool|Post
     {
+        $prevTitle = $post->title;
+        $prevContent = $post->content;
+
         $title = data_get($data, 'title');
         $content = data_get($data, 'content');
 
@@ -46,6 +55,13 @@ class PostService
             'content' => $content,
         ]);
 
+        if ($post->title !== $prevTitle) {
+            $this->logService->updateLog($post, $user, 'title', $prevTitle, $title);
+        }
+
+        if ($post->content !== $prevContent) {
+            $this->logService->updateLog($post, $user, 'content', $prevContent, $content);
+        }
 
         if ($status) {
             return $post;
@@ -61,9 +77,11 @@ class PostService
      * @param User $user
      * @return bool|null
      */
-    public function delete(Post $post, User $user)
+    public function delete(Post $post, User $user): ?bool
     {
         $status = $post->delete();
+
+        $this->logService->deleteLog($post, $user);
 
         return $status;
     }
