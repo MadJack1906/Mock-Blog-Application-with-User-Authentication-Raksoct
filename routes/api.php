@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\PostController;
 use App\Http\Controllers\Api\UserController;
+use App\Http\Responses\Response;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -22,7 +23,7 @@ Route::group(['prefix' => 'users'], function () {
 
 Route::group(['prefix' => 'posts'], function () {
     Route::get('/', [PostController::class, 'allPosts'])->name('api.posts.all-posts');
-    Route::get('/{post}', [PostController::class, 'getPost'])->name('api.posts.get')->missing(PostController::middleModelResponse());
+    Route::get('/{post}', [PostController::class, 'getPost'])->name('api.posts.get')->missing(fn() => Response::missingModel());
 
     Route::middleware('auth:sanctum')->group(function () {
         Route::post('/create', [PostController::class, 'create'])->name('api.posts.create');

@@ -9,6 +9,7 @@ use App\Http\Requests\UserUpdateEmailRequest;
 use App\Http\Requests\UserUpdatePasswordRequest;
 use App\Http\Resources\Api\UserLoginResource;
 use App\Http\Resources\Api\UserResource;
+use App\Http\Responses\Response;
 use App\Services\UserService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -40,7 +41,7 @@ class UserController extends Controller
             return new UserLoginResource($user);
         }
 
-        return response()->json([
+        return Response::error([
             'message' => 'Invalid login credentials'
         ], 422);
     }
@@ -56,14 +57,14 @@ class UserController extends Controller
         $user = Auth::user();
 
         if ($user->currentAccessToken()->delete()) {
-            return response()->json([
-                'message' => 'Logout Success'
+            return Response::success([
+                'message' => 'Logout Succes'
             ]);
         }
 
-        return response()->json([
-            'message' => "Failed to logout"
-        ]);
+        return Response::error([
+            'message' => 'Failed to logout'
+        ], 422);
     }
 
     /**
@@ -82,8 +83,8 @@ class UserController extends Controller
             return new UserLoginResource($user);
         }
 
-        return response()->json([
-            'message' => 'Failed to signup the user',
+        return Response::error([
+            'message' => 'Failed to signup the user'
         ], 422);
     }
 
@@ -103,7 +104,7 @@ class UserController extends Controller
             return new UserResource($user);
         }
 
-        return response()->json([
+        return Response::error([
             'message' => "Failed to update the user's email"
         ], 422);
     }
@@ -121,13 +122,13 @@ class UserController extends Controller
         $user = $this->service->updatePassword(Auth::user(), $data);
 
         if ($user) {
-            return response()->json([
-                'message' => 'Password Updated Successfully',
+            return Response::success([
+                'message' => "Password Updated Successfully"
             ]);
         }
 
-        return response()->json([
-            'message' => 'Failed to update the password',
+        return Response::error([
+            'message' => "Failed to update the password"
         ], 422);
     }
 }

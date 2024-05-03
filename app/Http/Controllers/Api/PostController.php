@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\PostCreateRequest;
 use App\Http\Resources\Api\PostResource;
+use App\Http\Responses\Response;
 use App\Models\Post;
 use App\Services\PostService;
 use Illuminate\Http\JsonResponse;
@@ -33,7 +34,7 @@ class PostController extends Controller
             return new PostResource($post);
         }
 
-        return response()->json([
+        return Response::error([
             'message' => 'Failed to create post'
         ], 422);
     }
@@ -61,15 +62,4 @@ class PostController extends Controller
         return PostResource::collection($posts);
     }
 
-    /**
-     * Missing Model Response
-     *
-     * @return JsonResponse
-     */
-    public static function middleModelResponse(): JsonResponse
-    {
-        return response()->json([
-            'message' => 'Record not found'
-        ], 422);
-    }
 }
