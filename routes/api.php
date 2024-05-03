@@ -21,6 +21,9 @@ Route::group(['prefix' => 'users'], function () {
 });
 
 Route::group(['prefix' => 'posts'], function () {
+    Route::get('/', [PostController::class, 'allPosts'])->name('api.posts.all-posts');
+    Route::get('/{post}', [PostController::class, 'getPost'])->name('api.posts.get')->missing(PostController::middleModelResponse());
+
     Route::middleware('auth:sanctum')->group(function () {
         Route::post('/create', [PostController::class, 'create'])->name('api.posts.create');
     });
