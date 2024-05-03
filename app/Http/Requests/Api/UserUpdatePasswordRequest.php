@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Api;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class LoginUserRequest extends FormRequest
+class UserUpdatePasswordRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,8 +22,9 @@ class LoginUserRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'email' => 'required|email',
-            'password' => 'required|string|min:8'
+            'password' => 'required|current_password:api|min:8',
+            'new_password' => 'required|string|confirmed|min:8',
+            'new_password_confirmation' => 'required|string|min:8',
         ];
     }
 }

@@ -3,10 +3,10 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\LoginUserRequest;
-use App\Http\Requests\UserRegisterRequest;
-use App\Http\Requests\UserUpdateEmailRequest;
-use App\Http\Requests\UserUpdatePasswordRequest;
+use App\Http\Requests\Api\LoginUserRequest;
+use App\Http\Requests\Api\UserRegisterRequest;
+use App\Http\Requests\Api\UserUpdateEmailRequest;
+use App\Http\Requests\Api\UserUpdatePasswordRequest;
 use App\Http\Resources\Api\UserLoginResource;
 use App\Http\Resources\Api\UserResource;
 use App\Http\Responses\Response;

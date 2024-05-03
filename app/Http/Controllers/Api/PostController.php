@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\PostCreateRequest;
+use App\Http\Requests\Api\PostCreateRequest;
 use App\Http\Resources\Api\PostResource;
 use App\Http\Responses\Response;
 use App\Models\Post;
@@ -62,4 +62,8 @@ class PostController extends Controller
         return PostResource::collection($posts);
     }
 
+    public function updatePost()
+    {
+
+    }
 }
