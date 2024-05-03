@@ -24,8 +24,6 @@ class UserController extends Controller
         if (Auth::attempt($credentials)) {
             $user = Auth::user();
 
-            $user->tokens()->delete();
-
             $token = $user->createToken('bearer-token')->plainTextToken;
             $user['bearerToken'] = $token;
 
@@ -35,6 +33,27 @@ class UserController extends Controller
         return response()->json([
             'message' => 'Invalid login credentials'
         ], 422);
+    }
+
+    /**
+     *
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse|void
+     */
+    public function logout()
+    {
+        $user = Auth::user();
+
+        if ($user->currentAccessToken()->delete()) {
+            return response()->json([
+                'message' => 'Logout Success'
+            ]);
+        }
+
+        return response()->json([
+            'message' => "Failed to logout"
+        ]);
     }
 
 }
