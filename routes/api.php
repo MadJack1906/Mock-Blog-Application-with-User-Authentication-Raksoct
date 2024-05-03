@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\PostController;
 use App\Http\Controllers\Api\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -16,5 +17,11 @@ Route::group(['prefix' => 'users'], function () {
         Route::post('/logout', [UserController::class, 'logout'])->name('api.users.logout');
         Route::put('/update/email', [UserController::class, 'updateEmail'])->name('api.users.update.email');
         Route::put('/update/password', [UserController::class, 'updatePassword'])->name('api.users.update.password');
+    });
+});
+
+Route::group(['prefix' => 'posts'], function () {
+    Route::middleware('auth:sanctum')->group(function () {
+        Route::post('/create', [PostController::class, 'create'])->name('api.posts.create');
     });
 });
