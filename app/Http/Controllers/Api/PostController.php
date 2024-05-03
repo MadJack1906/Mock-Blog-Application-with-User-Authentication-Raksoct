@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\PostCreateRequest;
+use App\Http\Requests\Api\PostUpdateRequest;
 use App\Http\Resources\Api\PostResource;
 use App\Http\Responses\Response;
 use App\Models\Post;
@@ -62,8 +63,21 @@ class PostController extends Controller
         return PostResource::collection($posts);
     }
 
-    public function updatePost()
+    /**
+     * @param PostUpdateRequest $request
+     * @param Post $post
+     * @return PostResource|JsonResponse
+     */
+    public function updatePost(PostUpdateRequest $request, Post $post) : PostResource | JsonResponse
     {
+        $updatedPost = $this->service->update($post, $request->validated(), Auth::user());
 
+        if ($updatedPost) {
+            return new PostResource($updatedPost);
+        }
+
+        return Response::error([
+            'message' => 'Failed to update the post',
+        ], 422);
     }
 }

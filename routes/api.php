@@ -27,5 +27,6 @@ Route::group(['prefix' => 'posts'], function () {
 
     Route::middleware('auth:sanctum')->group(function () {
         Route::post('/create', [PostController::class, 'create'])->name('api.posts.create');
+        Route::put('/{post}/update', [PostController::class, 'updatePost'])->name('api.posts.get')->missing(fn() => Response::missingModel());
     });
 });
