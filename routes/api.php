@@ -13,7 +13,8 @@ Route::group(['prefix' => 'users'], function () {
     Route::post('/register', [UserController::class, 'register'])->name('api.users.register');
 
     Route::middleware('auth:sanctum')->group(function () {
-        Route::put('/update/email', [UserController::class, 'updateEmail'])->name('api.users.update.email');
         Route::post('/logout', [UserController::class, 'logout'])->name('api.users.logout');
+        Route::put('/update/email', [UserController::class, 'updateEmail'])->name('api.users.update.email');
+        Route::put('/update/password', [UserController::class, 'updatePassword'])->name('api.users.update.password');
     });
 });

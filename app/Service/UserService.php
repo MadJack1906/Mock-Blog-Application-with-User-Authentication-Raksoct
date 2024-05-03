@@ -48,4 +48,24 @@ class UserService
 
         return false;
     }
+
+    /**
+     * Updates the password of the user
+     *
+     * @param User $user
+     * @param string $password
+     * @return User|bool
+     */
+    public function updatePassword(User $user, string $password) : User | bool
+    {
+        $isUpdateSuccess = $user->update([
+            'password' => $password
+        ]);
+
+        if ($isUpdateSuccess) {
+            return $user;
+        }
+
+        return false;
+    }
 }

@@ -4,8 +4,9 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\LoginUserRequest;
-use App\Http\Requests\UserSignUpRequest;
+use App\Http\Requests\UserRegisterRequest;
 use App\Http\Requests\UserUpdateEmailRequest;
+use App\Http\Requests\UserUpdatePasswordRequest;
 use App\Http\Resources\UserLoginResource;
 use App\Http\Resources\UserResource;
 use App\Service\UserService;
@@ -68,10 +69,10 @@ class UserController extends Controller
     /**
      * User signup controller method
      *
-     * @param UserSignUpRequest $request
+     * @param UserRegisterRequest $request
      * @return JsonResponse|UserLoginResource
      */
-    public function register(UserSignUpRequest $request) : JsonResponse | UserLoginResource
+    public function register(UserRegisterRequest $request) : JsonResponse | UserLoginResource
     {
         $input = $request->validated();
 
@@ -104,6 +105,29 @@ class UserController extends Controller
 
         return response()->json([
             'message' => "Failed to update the user's email"
+        ], 422);
+    }
+
+    /**
+     * Updates the password of the user
+     *
+     * @param UserUpdatePasswordRequest $request
+     * @return JsonResponse
+     */
+    public function updatePassword(UserUpdatePasswordRequest $request) : JsonResponse
+    {
+        $data = $request->validated('new_password');
+
+        $user = $this->service->updatePassword(Auth::user(), $data);
+
+        if ($user) {
+            return response()->json([
+                'message' => 'Password Updated Successfully',
+            ]);
+        }
+
+        return response()->json([
+            'message' => 'Failed to update the password',
         ], 422);
     }
 }
