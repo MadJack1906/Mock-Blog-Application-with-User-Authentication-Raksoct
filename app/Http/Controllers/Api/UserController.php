@@ -4,12 +4,19 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\LoginUserRequest;
+use App\Http\Requests\UserSignUpRequest;
 use App\Http\Resources\UserLoginResource;
+use App\Service\UserService;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
+
+    public function __construct(
+        private UserService $service
+    ) {}
 
     /**
      * Login Method for the UserController
@@ -36,7 +43,7 @@ class UserController extends Controller
     }
 
     /**
-     *
+     * User logout controller method
      *
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse|void
@@ -56,4 +63,24 @@ class UserController extends Controller
         ]);
     }
 
+    /**
+     * User signup controller method
+     *
+     * @param UserSignUpRequest $request
+     * @return JsonResponse|UserLoginResource
+     */
+    public function register(UserSignUpRequest $request) : JsonResponse | UserLoginResource
+    {
+        $input = $request->validated();
+
+        $user = $this->service->createUser($input);
+
+        if ($user?->id !== null) {
+            return new UserLoginResource($user);
+        }
+
+        return response()->json([
+            'message' => 'Failed to signup the user',
+        ], 422);
+    }
 }
